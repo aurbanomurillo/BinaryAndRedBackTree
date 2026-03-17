@@ -1,0 +1,5 @@
+src/partial_solution_lab_2.py
+src/test.py
+__pycache__/
+*.py[cod]
+documentation/index.htm
