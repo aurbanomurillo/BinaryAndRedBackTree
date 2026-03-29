@@ -196,11 +196,11 @@ class Node:
             parent = parent.get_parent()
         return parent
     
-    def height_below(self) -> int:
-        left_height = 0 if self.get_left() is None else 1 + self.get_left().height_below()
-        right_height = 0 if self.get_right() is None else 1 + self.get_right().height_below()
+    def height(self) -> int:
+        left_height = 0 if self.get_left() is None else self.get_left().height()
+        right_height = 0 if self.get_right() is None else self.get_right().height()
 
-        return max([left_height, right_height])
+        return 1 + max([left_height, right_height])
 
 class BinaryTree:
     """
@@ -239,7 +239,8 @@ class BinaryTree:
                     else:
                         current = current.get_right()
     def height(self) -> None:
-        return self.root.height_below()
+        if self.root == None: return 0
+        return self.root.height()
     
     def find_node(self, key) -> tuple:
         current = self.root
@@ -254,7 +255,7 @@ class BinaryTree:
 
     def delete(self, key) -> bool:
         if self.root is None:
-            return
+            return False
         current = self.root
         while current is not None and not current.key == key:
             if key < current.key:
@@ -286,11 +287,11 @@ class BinaryTree:
         if self.root.get_right() is None:
             right_height = 0
         else:
-            right_height = self.root.get_right().height_below()
+            right_height = self.root.get_right().height()
         if self.root.get_left() is None:
             left_height = 0
         else:
-            left_height = self.root.get_left().height_below()
+            left_height = self.root.get_left().height()
         return right_height - left_height in [-1, 0, 1]
 
     def show(self) -> None:
