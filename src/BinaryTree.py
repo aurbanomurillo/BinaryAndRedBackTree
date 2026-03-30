@@ -298,7 +298,63 @@ class BinaryTree:
         """Displays the entire binary tree."""
         self.root.show()
 
+def in_order(tree: BinaryTree) -> None:
+    """In-order traversal: left subtree → node → right subtree"""
+    def _in_order_helper(node):
+        if node is None:
+            return
+        _in_order_helper(node.get_left())
+        print(node.key, end=' ')
+        _in_order_helper(node.get_right())
+    
+    if tree.root is None:
+        return
+    _in_order_helper(tree.root)
+    print()  # Newline at the end
 
+def pre_order(tree: BinaryTree) -> None:
+    """Pre-order traversal: node → left subtree → right subtree"""
+    def _pre_order_helper(node):
+        if node is None:
+            return
+        print(node.key, end=' ')
+        _pre_order_helper(node.get_left())
+        _pre_order_helper(node.get_right())
+    
+    if tree.root is None:
+        return
+    _pre_order_helper(tree.root)
+    print()  # Newline at the end
 
+def post_order(tree: BinaryTree) -> None:
+    """Post-order traversal: left subtree → right subtree → node"""
+    def _post_order_helper(node):
+        if node is None:
+            return
+        _post_order_helper(node.get_left())
+        _post_order_helper(node.get_right())
+        print(node.key, end=' ')
+    
+    if tree.root is None:
+        return
+    _post_order_helper(tree.root)
+    print()  # Newline at the end
 
-
+def level_order(tree: BinaryTree) -> None:
+    """Level-order traversal (BFS): top-to-bottom, left-to-right"""
+    if tree.root is None:
+        return
+    
+    from collections import deque
+    queue = deque([tree.root])
+    
+    while queue:
+        node = queue.popleft()
+        print(node.key, end=' ')
+        
+        if node.get_left() is not None:
+            queue.append(node.get_left())
+        if node.get_right() is not None:
+            queue.append(node.get_right())
+    
+    print()  # Newline at the end
