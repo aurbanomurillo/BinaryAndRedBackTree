@@ -313,5 +313,3 @@ def level_order(tree):
         if node.get_right() is not None:
             queue.append(node.get_right())
     print()
-
-
