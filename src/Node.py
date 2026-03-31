@@ -10,16 +10,12 @@ class Node:
         """
         Initializes a new Node with a key and an optional value.
 
-        Parameters:
-        ----------
-        key
-            Unique identifier for the node.
-        value
-            Additional data associated with the node.
+        Args:
+            key: Unique identifier for the node.
+            value: Additional data associated with the node.
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         self._parent = None
@@ -33,13 +29,11 @@ class Node:
         Retrieves the left child of the node.
 
         Returns:
-        -------
-        Node | None
-            The left child node, or None if it does not exist.
+            Node: The left child node.
+                Returns None if it does not exist.
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         return self._left
@@ -48,18 +42,14 @@ class Node:
         """
         Sets the left child of the node and updates the parent reference.
 
-        Parameters:
-        ----------
-        node : Node | None
-            The node to set as left child, or None to remove.
+        Args:
+            node (Node | None): The node to set as left child, or None to remove.
 
         Returns:
-        -------
-        None
+            None
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         self._left = node
@@ -71,13 +61,11 @@ class Node:
         Retrieves the right child of the node.
 
         Returns:
-        -------
-        Node | None
-            The right child node, or None if it does not exist.
+            Node: The right child node.
+                Returns None if it does not exist.
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         return self._right
@@ -86,18 +74,14 @@ class Node:
         """
         Sets the right child of the node and updates the parent reference.
 
-        Parameters:
-        ----------
-        node : Node | None
-            The node to set as right child, or None to remove.
+        Args:
+            node (Node | None): The node to set as right child, or None to remove.
 
         Returns:
-        -------
-        None
+            None
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         self._right = node
@@ -109,13 +93,11 @@ class Node:
         Retrieves the parent of the node.
 
         Returns:
-        -------
-        Node | None
-            The parent node, or None if this is the root.
+            Node: The parent node.
+                Returns None if this is the root.
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         return self._parent
@@ -124,18 +106,14 @@ class Node:
         """
         Sets the parent of the node.
 
-        Parameters:
-        ----------
-        node : Node | None
-            The node to set as parent, or None if this becomes the root.
+        Args:
+            node (Node | None): The node to set as parent, or None if this becomes the root.
 
         Returns:
-        -------
-        None
+            None
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         self._parent = node
@@ -145,13 +123,10 @@ class Node:
         Returns a string representation of the node (its key).
 
         Returns:
-        -------
-        str
-            String representation of the node's key.
+            str: String representation of the node's key.
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         return f"{self.key}"
@@ -163,20 +138,15 @@ class Node:
         Prints the node's key with a hierarchical visualization using indentation
         and prefixes (L--- for left child, R--- for right child).
 
-        Parameters:
-        ----------
-        level : int, optional
-            Current depth level in the tree (default is 0 for root).
-        prefix : str, optional
-            Prefix label for the node (default is "Root: ").
+        Args:
+            level (int, optional): Current depth level in the tree (default is 0 for root).
+            prefix (str, optional): Prefix label for the node (default is "Root: ").
 
         Returns:
-        -------
-        None
+            None
 
         Time Complexity:
-        ---------------
-        O(n)
+            O(n)
         """
 
         indent = " " * (level * 4)
@@ -192,13 +162,10 @@ class Node:
         Checks if the current node is the left child of its parent.
 
         Returns:
-        -------
-        bool
-            True if this node is the left child of its parent, False otherwise.
+            bool: True if this node is the left child of its parent, False otherwise.
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         try:
@@ -211,13 +178,10 @@ class Node:
         Checks if the current node is the right child of its parent.
 
         Returns:
-        -------
-        bool
-            True if this node is the right child of its parent, False otherwise.
+            bool: True if this node is the right child of its parent, False otherwise.
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         try:
@@ -233,20 +197,16 @@ class Node:
         - Goes left if key is smaller than current node's key
         - Goes right if key is larger than current node's key
 
-        Parameters:
-        ----------
-        key
-            Key to search for.
+        Args:
+            key: Key to search for.
 
         Returns:
-        -------
-        Node | None
-            The node with the matching key if found, otherwise None.
+            Node: The node with the matching key if found.
+                Returns None otherwise.
 
         Time Complexity:
-        ---------------
-        O(log n) average case
-        O(n) worst case (completely unbalanced tree)
+            O(log n) average case
+            O(n) worst case (completely unbalanced tree)
         """
 
         if self.key == key:
@@ -264,13 +224,10 @@ class Node:
         Traverses left until reaching the leftmost node.
 
         Returns:
-        -------
-        Node
-            The leftmost (minimum) node in this subtree.
+            Node: The leftmost (minimum) node in this subtree.
 
         Time Complexity:
-        ---------------
-        O(h) - Height of the tree.
+            O(h) - Height of the tree.
         """
 
         current = self
@@ -285,13 +242,10 @@ class Node:
         Traverses right until reaching the rightmost node.
 
         Returns:
-        -------
-        Node
-            The rightmost (maximum) node in this subtree.
+            Node: The rightmost (maximum) node in this subtree.
 
         Time Complexity:
-        ---------------
-        O(h) - Height of the tree.
+            O(h) - Height of the tree.
         """
 
         current = self
@@ -308,13 +262,11 @@ class Node:
         ancestor that has this node in its left subtree.
 
         Returns:
-        -------
-        Node | None
-            The in-order successor node, or None if no successor exists (this is the maximum).
+            Node: The in-order successor node.
+                Returns None if no successor exists (this is the maximum).
 
         Time Complexity:
-        ---------------
-        O(h) - Height of the tree.
+            O(h) - Height of the tree.
         """
 
         if self.get_right() is not None:
@@ -335,13 +287,11 @@ class Node:
         ancestor that has this node in its right subtree.
 
         Returns:
-        -------
-        Node | None
-            The in-order predecessor node, or None if no predecessor exists (this is the minimum).
+            Node: The in-order predecessor node.
+                Returns None if no predecessor exists (this is the minimum).
 
         Time Complexity:
-        ---------------
-        O(h) - Height of the tree.
+            O(h) - Height of the tree.
         """
 
         if self.get_left() is not None:
@@ -361,15 +311,15 @@ class Node:
         of its children. A leaf node has height 1, and a None child has height 0.
 
         Returns:
-        -------
-        int
-            Height of this subtree (minimum 1 for a leaf).
+            int: Height of this subtree (minimum 1 for a leaf).
 
         Time Complexity:
-        ---------------
-        O(n)
+            O(n)
         """
 
         left_height = 0 if self.get_left() is None else self.get_left().height()
         right_height = 0 if self.get_right() is None else self.get_right().height()
         return 1 + max([left_height, right_height])
+
+
+

@@ -12,18 +12,14 @@ class BinaryTree:
         """
         Initializes the binary tree with a root node.
 
-        Parameters:
-        ----------
-        root : Node | None, optional
-            The root node of the binary tree (default is None for empty tree).
+        Args:
+            root (Node | None, optional): The root node of the binary tree (default is None for empty tree).
 
         Returns:
-        -------
-        None
+            None
 
         Time Complexity:
-        ---------------
-        O(1)
+            O(1)
         """
 
         self.root = root
@@ -37,21 +33,16 @@ class BinaryTree:
         - Go left if key is smaller, right if larger or equal
         - Insert as leaf when appropriate position is found
 
-        Parameters:
-        ----------
-        key
-            The key for the new node.
-        value
-            Optional data associated with the key (default is None).
+        Args:
+            key: The key for the new node.
+            value: Optional data associated with the key (default is None).
 
         Returns:
-        -------
-        None
+            None
 
         Time Complexity:
-        ---------------
-        O(log n) average case (balanced BST)
-        O(n) worst case (completely unbalanced tree)
+            O(log n) average case (balanced BST)
+            O(n) worst case (completely unbalanced tree)
         """
 
         new_node = Node(key, value)
@@ -82,13 +73,10 @@ class BinaryTree:
         which uses node-counting semantics.
 
         Returns:
-        -------
-        int
-            Height of the tree (0 for empty, minimum 1 for single node).
+            int: Height of the tree (0 for empty, minimum 1 for single node).
 
         Time Complexity:
-        ---------------
-        O(n) - Must visit all n nodes in the tree to compute height.
+            O(n) - Must visit all n nodes in the tree to compute height.
         """
         if self.root is None:
             return 0
@@ -100,20 +88,16 @@ class BinaryTree:
 
         Performs iterative BST search following the standard algorithm.
 
-        Parameters:
-        ----------
-        key
-            Key to search for.
+        Args:
+            key: Key to search for.
 
         Returns:
-        -------
-        tuple | None
-            Tuple of (key, data) if found, None otherwise.
+            tuple: Tuple of (key, data) if found.
+                Returns None otherwise.
 
         Time Complexity:
-        ---------------
-        O(log n) average case (balanced BST)
-        O(n) worst case (completely unbalanced tree)
+            O(log n) average case (balanced BST)
+            O(n) worst case (completely unbalanced tree)
         """
         current = self.root
         while current is not None:
@@ -134,20 +118,15 @@ class BinaryTree:
         2. Node with one child: replace with that child
         3. Node with two children: replace with in-order successor, then delete successor
 
-        Parameters:
-        ----------
-        key
-            Key of the node to delete.
+        Args:
+            key: Key of the node to delete.
 
         Returns:
-        -------
-        bool
-            True if deletion was successful, False if key not found.
+            bool: True if deletion was successful, False if key not found.
 
         Time Complexity:
-        ---------------
-        O(log n) average case (balanced BST)
-        O(n) worst case (completely unbalanced tree)
+            O(log n) average case (balanced BST)
+            O(n) worst case (completely unbalanced tree)
         """
         if self.root is None:
             return False
@@ -184,14 +163,11 @@ class BinaryTree:
         of the root is within [-1, 0, 1], which indicates a balanced tree.
 
         Returns:
-        -------
-        bool
-            True if the tree is balanced at root (difference in [-1, 0, 1]),
-            False if unbalanced (difference outside that range).
+            bool: True if the tree is balanced at root (difference in [-1, 0, 1]),
+                False if unbalanced (difference outside that range).
 
         Time Complexity:
-        ---------------
-        O(n) - Must compute heights of both subtrees (visits all nodes).
+            O(n) - Must compute heights of both subtrees (visits all nodes).
         """
         if self.root is None:
             return True
@@ -213,12 +189,10 @@ class BinaryTree:
         prefixes to show the parent-child relationships.
 
         Returns:
-        -------
-        None
+            None
 
         Time Complexity:
-        ---------------
-        O(n) - Visits all n nodes in the tree and prints them.
+            O(n) - Visits all n nodes in the tree and prints them.
         """
         if self.root is not None:
             self.root.show()
@@ -230,18 +204,14 @@ def in_order(tree):
     In-order traversal visits nodes in ascending order when applied to a BST.
     The output is a space-separated list of keys on a single line.
 
-    Parameters:
-    ----------
-    tree : BinaryTree | Node
-        Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
+    Args:
+        tree (BinaryTree | Node): Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
 
     Returns:
-    -------
-    None
+        None
 
     Time Complexity:
-    ---------------
-    O(n) - Visits all n nodes in the tree exactly once.
+        O(n) - Visits all n nodes in the tree exactly once.
     """
     if isinstance(tree, BinaryTree):
         if tree.root is None:
@@ -263,18 +233,14 @@ def pre_order(tree):
     creating a copy of the tree or for serialization.
     The output is a space-separated list of keys on a single line.
 
-    Parameters:
-    ----------
-    tree : BinaryTree | Node
-        Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
+    Args:
+        tree (BinaryTree | Node): Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
 
     Returns:
-    -------
-    None
+        None
 
     Time Complexity:
-    ---------------
-    O(n) - Visits all n nodes in the tree exactly once.
+        O(n) - Visits all n nodes in the tree exactly once.
     """
     if isinstance(tree, BinaryTree):
         if tree.root is None:
@@ -296,18 +262,14 @@ def post_order(tree):
     deletion, computing subtree properties, or evaluating expressions.
     The output is a space-separated list of keys on a single line.
 
-    Parameters:
-    ----------
-    tree : BinaryTree | Node
-        Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
+    Args:
+        tree (BinaryTree | Node): Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
 
     Returns:
-    -------
-    None
+        None
 
     Time Complexity:
-    ---------------
-    O(n) - Visits all n nodes in the tree exactly once.
+        O(n) - Visits all n nodes in the tree exactly once.
     """
     if isinstance(tree, BinaryTree):
         if tree.root is None:
@@ -330,19 +292,15 @@ def level_order(tree):
     without external data structure imports (uses list with pop(0)).
     The output is a space-separated list of keys on a single line.
 
-    Parameters:
-    ----------
-    tree : BinaryTree
-        The binary tree to traverse.
+    Args:
+        tree (BinaryTree): The binary tree to traverse.
 
     Returns:
-    -------
-    None
+        None
 
     Time Complexity:
-    ---------------
-    O(n) - Visits all n nodes in the tree exactly once.
-    Space Complexity: O(w) where w is the maximum width (number of nodes at widest level).
+        O(n) - Visits all n nodes in the tree exactly once.
+        Space Complexity: O(w) where w is the maximum width (number of nodes at widest level).
     """
     if tree.root is None:
         return
@@ -355,3 +313,5 @@ def level_order(tree):
         if node.get_right() is not None:
             queue.append(node.get_right())
     print()
+
+
