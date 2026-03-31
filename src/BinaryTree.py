@@ -1,224 +1,59 @@
-class Node:
-    """
-    Represents a node in a binary search tree.
-
-    Each node stores a key, optional data, and references to its parent
-    and children.
-    """
-
-    def __init__(self, key, value=None):
-        """
-        Initializes a new Node with a key and an optional value.
-
-        Parameters:
-        ----------
-        key : any
-            Unique identifier for the node.
-        value : any, optional
-            Additional data associated with the node.
-        """
-        self._parent = None  # Pointer to the parent node
-        self._left = None    # Pointer to the left child
-        self._right = None   # Pointer to the right child
-        self.key = key       # Key that identifies the node
-        self.data = value    # Optional additional data
-
-    def get_left(self) -> 'Node':
-        """
-        Retrieves the left child of the node.
-
-        Returns:
-        -------
-        Node or None
-        """
-        return self._left
-
-    def set_left(self, node) -> None:
-        """
-        Sets the left child of the node and updates the parent reference.
-
-        Parameters:
-        ----------
-        node : Node
-        """
-        self._left = node
-        if node is not None:
-            node.set_parent(self)
-
-    def get_right(self) -> 'Node':
-        """
-        Retrieves the right child of the node.
-
-        Returns:
-        -------
-        Node or None
-        """
-        return self._right
-
-    def set_right(self, node) -> None:
-        """
-        Sets the right child of the node and updates the parent reference.
-
-        Parameters:
-        ----------
-        node : Node
-        """
-        self._right = node
-        if node is not None:
-            node.set_parent(self)
-
-    def get_parent(self) -> 'Node':
-        """
-        Retrieves the parent of the node.
-
-        Returns:
-        -------
-        Node or None
-        """
-        return self._parent
-
-    def set_parent(self, node) -> None:
-        """
-        Sets the parent of the node.
-
-        Parameters:
-        ----------
-        node : Node
-        """
-        self._parent = node
-
-    def __str__(self):
-        """
-        Returns a string representation of the node (its key).
-        """
-        return f"{self.key}"
-
-    def show(self, level=0, prefix="Root: ") -> None:
-        indent = " " * (level * 4)
-        print(f"{indent}{prefix}{self}")
-
-        if self.get_left() is not None:
-            self.get_left().show(level + 1, prefix="L--- ")
-        if self.get_right() is not None:
-            self.get_right().show(level + 1, prefix="R--- ")
-    
-    def is_right(self) -> bool:
-        try: return self.key == self.get_parent().get_right().key
-        except: return False
-
-    def is_right(self) -> bool:
-        try: return self.key == self.get_parent().get_left().key
-        except: return False
-    
-    def find_node(self, key) -> 'Node':
-        """
-        Searches for a node with the given key in the current subtree.
-
-        Parameters:
-        ----------
-        key : any
-            Key to search for.
-
-        Returns:
-        -------
-        Node or None
-            Matching node if found, otherwise None.
-        """
-        if self.key == key:
-            return self
-        elif key < self.key and self.get_left() is not None:
-            return self.get_left().find_node(key)
-        elif key > self.key and self.get_right() is not None:
-            return self.get_right().find_node(key)
-        return None
-    
-    def min_key(self):
-        """
-        Finds the node with the minimum key in the current subtree.
-
-        Returns:
-        -------
-        Node
-            Leftmost node in this subtree.
-        """
-        current = self
-        while current.get_left() is not None:
-            current = current.get_left()
-        return current
-
-    def max_key(self):
-        """
-        Finds the node with the maximum key in the current subtree.
-
-        Returns:
-        -------
-        Node
-            Rightmost node in this subtree.
-        """
-        current = self
-        while current.get_right() is not None:
-            current = current.get_right()
-        return current
-
-    def successor(self):
-        """
-        Finds the in-order successor of the current node.
-
-        Returns:
-        -------
-        Node or None
-            Next node in sorted order, or None if it does not exist.
-        """
-        if self.get_right() is not None:
-            return self.get_right().min_key()
-        current = self
-        parent = self.get_parent()
-        while parent is not None and current == parent.get_right():
-            current = parent
-            parent = parent.get_parent()
-        return parent
-
-    def predecessor(self):
-        """
-        Finds the in-order predecessor of the current node.
-
-        Returns:
-        -------
-        Node or None
-            Previous node in sorted order, or None if it does not exist.
-        """
-        if self.get_left() is not None:
-            return self.get_left().max_key()
-        current = self
-        parent = self.get_parent()
-        while parent is not None and current == parent.get_left():
-            current = parent
-            parent = parent.get_parent()
-        return parent
-    
-    def height(self) -> int:
-        left_height = 0 if self.get_left() is None else self.get_left().height()
-        right_height = 0 if self.get_right() is None else self.get_right().height()
-
-        return 1 + max([left_height, right_height])
+from Node import Node
 
 class BinaryTree:
     """
     Represents a binary search tree with a reference to its root node.
+
+    Maintains the BST property: for each node, all keys in the left subtree
+    are smaller, and all keys in the right subtree are larger.
     """
 
-    def __init__(self, root: Node):
+    def __init__(self, root=None):
         """
         Initializes the binary tree with a root node.
 
         Parameters:
         ----------
-        root : Node
-            The root node of the binary tree.
+        root : Node | None, optional
+            The root node of the binary tree (default is None for empty tree).
+
+        Returns:
+        -------
+        None
+
+        Time Complexity:
+        ---------------
+        O(1)
         """
+
         self.root = root
 
-    def insert(self, key, value=None) -> None:
+    def insert(self, key, value=None):
+        """
+        Inserts a new node with the given key and optional value into the BST.
+
+        Performs iterative BST insertion following the standard algorithm:
+        - Compare key with current node
+        - Go left if key is smaller, right if larger or equal
+        - Insert as leaf when appropriate position is found
+
+        Parameters:
+        ----------
+        key
+            The key for the new node.
+        value
+            Optional data associated with the key (default is None).
+
+        Returns:
+        -------
+        None
+
+        Time Complexity:
+        ---------------
+        O(log n) average case (balanced BST)
+        O(n) worst case (completely unbalanced tree)
+        """
+
         new_node = Node(key, value)
         if self.root is None:
             self.root = new_node
@@ -238,22 +73,82 @@ class BinaryTree:
                         cond = False
                     else:
                         current = current.get_right()
-    def height(self) -> None:
-        if self.root == None: return 0
+
+    def height(self):
+        """
+        Computes the height of the entire binary tree.
+
+        Returns 0 for an empty tree, or delegates to root's height method
+        which uses node-counting semantics.
+
+        Returns:
+        -------
+        int
+            Height of the tree (0 for empty, minimum 1 for single node).
+
+        Time Complexity:
+        ---------------
+        O(n) - Must visit all n nodes in the tree to compute height.
+        """
+        if self.root is None:
+            return 0
         return self.root.height()
     
-    def find_node(self, key) -> tuple:
-        current = self.root
-        while True:
-            if key == current.key: return key, current.data
-            elif key < current.key:
-                if current.get_left() is None: return None
-                else: current = current.get_left()
-            else:
-                if current.get_right() is None: return None
-                else: current = current.get_right()
+    def find_node(self, key):
+        """
+        Searches for a node with the given key and returns its data.
 
-    def delete(self, key) -> bool:
+        Performs iterative BST search following the standard algorithm.
+
+        Parameters:
+        ----------
+        key
+            Key to search for.
+
+        Returns:
+        -------
+        tuple | None
+            Tuple of (key, data) if found, None otherwise.
+
+        Time Complexity:
+        ---------------
+        O(log n) average case (balanced BST)
+        O(n) worst case (completely unbalanced tree)
+        """
+        current = self.root
+        while current is not None:
+            if key == current.key:
+                return key, current.data
+            elif key < current.key:
+                current = current.get_left()
+            else:
+                current = current.get_right()
+        return None
+
+    def delete(self, key):
+        """
+        Deletes a node with the given key from the BST.
+
+        Handles three cases:
+        1. Leaf node: simply remove
+        2. Node with one child: replace with that child
+        3. Node with two children: replace with in-order successor, then delete successor
+
+        Parameters:
+        ----------
+        key
+            Key of the node to delete.
+
+        Returns:
+        -------
+        bool
+            True if deletion was successful, False if key not found.
+
+        Time Complexity:
+        ---------------
+        O(log n) average case (balanced BST)
+        O(n) worst case (completely unbalanced tree)
+        """
         if self.root is None:
             return False
         current = self.root
@@ -281,8 +176,24 @@ class BinaryTree:
             parent.set_right(child)
         return True
 
-    def skew(self) -> bool:
-        if self.root == None:
+    def skew(self):
+        """
+        Checks if the tree is balanced at the root level.
+
+        Determines if the height difference between left and right subtrees
+        of the root is within [-1, 0, 1], which indicates a balanced tree.
+
+        Returns:
+        -------
+        bool
+            True if the tree is balanced at root (difference in [-1, 0, 1]),
+            False if unbalanced (difference outside that range).
+
+        Time Complexity:
+        ---------------
+        O(n) - Must compute heights of both subtrees (visits all nodes).
+        """
+        if self.root is None:
             return True
         if self.root.get_right() is None:
             right_height = 0
@@ -294,11 +205,153 @@ class BinaryTree:
             left_height = self.root.get_left().height()
         return right_height - left_height in [-1, 0, 1]
 
-    def show(self) -> None:
-        """Displays the entire binary tree."""
-        self.root.show()
+    def show(self):
+        """
+        Displays the entire binary tree with hierarchical structure.
 
+        Prints a visual representation of the tree using indentation and
+        prefixes to show the parent-child relationships.
 
+        Returns:
+        -------
+        None
 
+        Time Complexity:
+        ---------------
+        O(n) - Visits all n nodes in the tree and prints them.
+        """
+        if self.root is not None:
+            self.root.show()
 
+def in_order(tree):
+    """
+    Performs in-order (left-root-right) traversal of the binary tree.
 
+    In-order traversal visits nodes in ascending order when applied to a BST.
+    The output is a space-separated list of keys on a single line.
+
+    Parameters:
+    ----------
+    tree : BinaryTree | Node
+        Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
+
+    Returns:
+    -------
+    None
+
+    Time Complexity:
+    ---------------
+    O(n) - Visits all n nodes in the tree exactly once.
+    """
+    if isinstance(tree, BinaryTree):
+        if tree.root is None:
+            return
+        in_order(tree.root)
+        print()
+    else:
+        if tree is None:
+            return
+        in_order(tree.get_left())
+        print(tree.key, end=' ')
+        in_order(tree.get_right())
+
+def pre_order(tree):
+    """
+    Performs pre-order (root-left-right) traversal of the binary tree.
+
+    Pre-order traversal visits the root before its subtrees. Useful for
+    creating a copy of the tree or for serialization.
+    The output is a space-separated list of keys on a single line.
+
+    Parameters:
+    ----------
+    tree : BinaryTree | Node
+        Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
+
+    Returns:
+    -------
+    None
+
+    Time Complexity:
+    ---------------
+    O(n) - Visits all n nodes in the tree exactly once.
+    """
+    if isinstance(tree, BinaryTree):
+        if tree.root is None:
+            return
+        pre_order(tree.root)
+        print()
+    else:
+        if tree is None:
+            return
+        print(tree.key, end=' ')
+        pre_order(tree.get_left())
+        pre_order(tree.get_right())
+
+def post_order(tree):
+    """
+    Performs post-order (left-right-root) traversal of the binary tree.
+
+    Post-order traversal visits the root after its subtrees. Useful for
+    deletion, computing subtree properties, or evaluating expressions.
+    The output is a space-separated list of keys on a single line.
+
+    Parameters:
+    ----------
+    tree : BinaryTree | Node
+        Either a BinaryTree instance (initial call) or a Node instance (recursive calls).
+
+    Returns:
+    -------
+    None
+
+    Time Complexity:
+    ---------------
+    O(n) - Visits all n nodes in the tree exactly once.
+    """
+    if isinstance(tree, BinaryTree):
+        if tree.root is None:
+            return
+        post_order(tree.root)
+        print()
+    else:
+        if tree is None:
+            return
+        post_order(tree.get_left())
+        post_order(tree.get_right())
+        print(tree.key, end=' ')
+
+def level_order(tree):
+    """
+    Performs level-order (breadth-first) traversal of the binary tree.
+
+    Level-order traversal processes the tree level by level, from top to bottom,
+    and from left to right within each level. Uses a queue-based iterative approach
+    without external data structure imports (uses list with pop(0)).
+    The output is a space-separated list of keys on a single line.
+
+    Parameters:
+    ----------
+    tree : BinaryTree
+        The binary tree to traverse.
+
+    Returns:
+    -------
+    None
+
+    Time Complexity:
+    ---------------
+    O(n) - Visits all n nodes in the tree exactly once.
+    Space Complexity: O(w) where w is the maximum width (number of nodes at widest level).
+    """
+    if tree.root is None:
+        return
+    queue = [tree.root]
+    while queue:
+        node = queue.pop(0)
+        print(node.key, end=' ')
+        if node.get_left() is not None:
+            queue.append(node.get_left())
+        if node.get_right() is not None:
+            queue.append(node.get_right())
+    print()
