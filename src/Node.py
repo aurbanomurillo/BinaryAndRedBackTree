@@ -321,5 +321,22 @@ class Node:
         right_height = 0 if self.get_right() is None else self.get_right().height()
         return 1 + max([left_height, right_height])
 
+    def count(self) -> int:
+        left = 0 if self.get_left() is None else self.get_left().count()
+        right = 0 if self.get_right() is None else self.get_right().count()
+        return 1 + left + right
 
+    def count_leafs(self):
+        if self.get_left() is None and self.get_right() is None:
+            return 1
+        elif self.get_left() is None:
+            return self.get_right().count_leafs()
+        elif self.get_right() is None:
+            return self.get_left().count_leafs()
+        return self.get_right().count_leafs() + self.get_left().count_leafs()
 
+    def longest_from_node(self):
+        left_path = [] if self.get_left() is None else self.get_left().longest_from_node()
+        right_path = [] if self.get_right() is None else self.get_right().longest_from_node()
+        best_child_path = left_path if len(left_path) >= len(right_path) else right_path
+        return best_child_path + [self]

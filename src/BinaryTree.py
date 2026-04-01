@@ -197,6 +197,46 @@ class BinaryTree:
         if self.root is not None:
             self.root.show()
 
+    def count_nodes_tree(self):
+        """
+        Counts the total number of nodes in the tree.
+
+        Returns:
+            int: Total number of nodes in the tree.
+
+        Time Complexity:
+            O(n)
+        """
+
+        return 0 if self.root is None else self.root.count()
+
+    def count_leafs(self):
+        """
+        Counts how many nodes are leaves (nodes with no children).
+
+        Returns:
+            int: Number of leaf nodes.
+
+        Time Complexity:
+            O(n)
+        """
+
+        return 0 if self.root is None else self.root.count_leafs()
+
+    def longest_path(self):
+        """
+        Returns one longest path from a leaf to the root.
+
+        Returns:
+            list[Node]: Node pointers in the path ordered from leaf to root.
+
+        Time Complexity:
+            O(n)
+        """
+
+        return [] if self.root is None else self.root.longest_from_node()
+
+
 def in_order(tree):
     """
     Performs in-order (left-root-right) traversal of the binary tree.
