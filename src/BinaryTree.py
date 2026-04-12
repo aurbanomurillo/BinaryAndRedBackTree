@@ -24,7 +24,7 @@ class BinaryTree:
 
         self.root = root
 
-    def insert(self, key, value=None):
+    def insert(self, key, value=None) -> None:
         """
         Inserts a new node with the given key and optional value into the BST.
 
@@ -82,7 +82,7 @@ class BinaryTree:
             return 0
         return self.root.height()
     
-    def find_node(self, key):
+    def find_node(self, key) -> tuple | None:
         """
         Searches for a node with the given key and returns its data.
 
@@ -109,7 +109,7 @@ class BinaryTree:
                 current = current.get_right()
         return None
 
-    def delete(self, key):
+    def delete(self, key) -> bool:
         """
         Deletes a node with the given key from the BST.
 
@@ -155,7 +155,7 @@ class BinaryTree:
             parent.set_right(child)
         return True
 
-    def skew(self):
+    def skew(self) -> bool:
         """
         Checks if the tree is balanced at the root level.
 
@@ -171,17 +171,10 @@ class BinaryTree:
         """
         if self.root is None:
             return True
-        if self.root.get_right() is None:
-            right_height = 0
         else:
-            right_height = self.root.get_right().height()
-        if self.root.get_left() is None:
-            left_height = 0
-        else:
-            left_height = self.root.get_left().height()
-        return right_height - left_height in [-1, 0, 1]
+            return self.root.skew()
 
-    def show(self):
+    def show(self) -> None:
         """
         Displays the entire binary tree with hierarchical structure.
 
@@ -237,7 +230,7 @@ class BinaryTree:
         return [] if self.root is None else self.root.longest_from_node()
 
 
-def in_order(tree):
+def in_order(tree) -> None:
     """
     Performs in-order (left-root-right) traversal of the binary tree.
 
@@ -265,7 +258,7 @@ def in_order(tree):
         print(tree.key, end=' ')
         in_order(tree.get_right())
 
-def pre_order(tree):
+def pre_order(tree) -> None:
     """
     Performs pre-order (root-left-right) traversal of the binary tree.
 
@@ -294,7 +287,7 @@ def pre_order(tree):
         pre_order(tree.get_left())
         pre_order(tree.get_right())
 
-def post_order(tree):
+def post_order(tree) -> None:
     """
     Performs post-order (left-right-root) traversal of the binary tree.
 
@@ -323,7 +316,7 @@ def post_order(tree):
         post_order(tree.get_right())
         print(tree.key, end=' ')
 
-def level_order(tree):
+def level_order(tree) -> None:
     """
     Performs level-order (breadth-first) traversal of the binary tree.
 
@@ -353,3 +346,59 @@ def level_order(tree):
         if node.get_right() is not None:
             queue.append(node.get_right())
     print()
+
+def paths_to_leaf_with_length(
+        node: Node, remaining_edges: int, 
+        current_path: list[str] = None, 
+        results: list[list[str]] = None
+        ) -> list[list[str]]:
+    
+    """
+    Returns all root-to-leaf paths with exact target length in edges.
+
+    The target length is given by ``remaining_edges`` at the beginning of the
+    call. This function uses backtracking to explore both subtrees while
+    building a current path and collecting only valid paths.
+
+    Typical usage:
+        paths = paths_to_leaf_with_length(tree.root, 3)
+
+    Args:
+        node (Node | None): Current node in the DFS traversal (starts at root).
+        remaining_edges (int): Number of edges still required to reach
+            the target length.
+        current_path (list[str] | None, optional): Internal path accumulator
+            for the current DFS branch.
+        results (list[list[str]] | None, optional): Internal accumulator of
+            valid paths.
+
+    Returns:
+        list[list[str]]: List of valid paths. Each path is a list of
+            strings built as ``str(node.key)``.
+
+    Time Complexity:
+        O(n) - Visits each node at most once in the traversal.
+    """
+    if current_path is None:
+        current_path = []
+    if results is None:
+        results = []
+
+    if node is None:
+        return results
+
+    current_path.append(str(node.key))
+
+    if node.get_left() is None and node.get_right() is None:
+        if remaining_edges == 0:
+            results.append(current_path.copy())
+        current_path.pop()
+        return results
+
+    if remaining_edges > 0:
+        paths_to_leaf_with_length(node.get_left(), remaining_edges - 1, current_path, results)
+        paths_to_leaf_with_length(node.get_right(), remaining_edges - 1, current_path, results)
+
+    current_path.pop()
+    return results
+

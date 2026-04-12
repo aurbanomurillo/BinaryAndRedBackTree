@@ -340,3 +340,17 @@ class Node:
         right_path = [] if self.get_right() is None else self.get_right().longest_from_node()
         best_child_path = left_path if len(left_path) >= len(right_path) else right_path
         return best_child_path + [self]
+    
+    def skew(self) -> bool:
+
+        if self.get_right() is None:
+            right_height = 0
+        else:
+            right_height = self.get_right().height()
+
+        if self.get_left() is None:
+            left_height = 0
+        else:
+            left_height = self.get_left().height()
+
+        return right_height - left_height in [-1, 0, 1]
